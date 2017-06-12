@@ -1,0 +1,86 @@
+// c++ code for heapsort
+
+#include <bits/stdc++.h>
+using namespace std;
+void swap(int *a,int *b)
+{
+	int temp;
+	temp=*b;
+	*b=*a;
+	*a=temp;
+	return;
+}
+void max_heapify(int a[],int i,int n)
+{
+	if(2*i+1<=n)
+	{
+		//two children
+		if(a[2*i]<=a[i] && a[2*i+1]<=a[i])
+			return;
+		if(a[2*i]>a[2*i+1])
+		{
+			swap(&a[i],&a[2*i]);
+			max_heapify(a,2*i,n);
+		}
+		else
+		{
+			swap(&a[i],&a[2*i+1]);
+			max_heapify(a,2*i+1,n);
+		}
+	}
+	if(2*i==n)
+	{
+		//one children
+		if(a[2*i]<=a[i])
+			return;
+		else
+		{
+			swap(&a[i],&a[2*i]);
+			max_heapify(a,2*i,n);
+		}
+	}
+	else
+		return;
+
+}
+void build_max_heap(int a[],int n)
+{
+	int i;
+	for(i=n/2;i>0;i--)
+		max_heapify(a,i,n);
+	return;
+}
+void heapsort(int a[],int n)
+{
+	while(n>1)
+	{
+		swap(&a[1],&a[n]);
+		n--;
+		max_heapify(a,1,n);
+	}
+	return;
+}
+void sorter(int a[],int n)
+{
+	build_max_heap(a,n);
+	heapsort(a,n);
+	return;
+}
+int main() 
+{
+	int n,i;
+	cin>>n;
+	int a[n+1];
+	for(i=1;i<=n;i++)
+		cin>>a[i];
+	sorter(a,n);
+	for(i=1;i<=n;i++)
+		cout<<a[i]<<" ";
+	return 0;
+}
+
+input:
+6
+5 4 8 6 2 5
+output:
+2 4 5 5 6 8
