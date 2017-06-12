@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define inf 100000000;
+void merge(int a[],int l,int mid,int r)
+{
+	int i=l,j=mid+1,k=0,s1=mid-l+2,s2=r-mid+1;
+	int a1[s1],a2[s2];
+
+	while(i<=mid)
+		a1[k++]=a[i++];
+	a1[k]=inf;k=0;
+
+	while(j<=r)
+		a2[k++]=a[j++];
+	a2[k]=inf;i=0;j=0;k=l;
+
+	while(k<=r)
+  {
+		if(a1[i]<a2[j])
+			a[k++]=a1[i++];
+		else
+			a[k++]=a2[j++];
+	}
+}
+void mergeSort(int a[],int l,int r)
+{
+	if(l<r)
+  {
+		int mid=l+(r-l)/2;
+		mergeSort(a,l,mid);
+		mergeSort(a,mid+1,r);
+		merge(a,l,mid,r);
+	}
+}
+int main() {
+	int n,i;
+	cin>>n;
+	int a[n];
+	for(i=0;i<n;i++)
+		cin>>a[i];
+	mergeSort(a,0,n-1);
+	for(i=0;i<n;i++)
+		cout<<a[i]<<" ";
+	return 0;
+}
