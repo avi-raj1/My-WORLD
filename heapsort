@@ -68,6 +68,7 @@ void sorter(int a[],int n)
 }
 int main() 
 {
+	// 1 indexing is used
 	int n,i;
 	cin>>n;
 	int a[n+1];
