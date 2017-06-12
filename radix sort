@@ -1,0 +1,91 @@
+//ATTENTION !!!!
+// failed attempt
+
+#include <bits/stdc++.h>
+using namespace std;
+#define inf 100000000;
+struct foo{
+	int number;
+	int key;
+};
+void countingSort(foo a[],int n)
+{
+	//cout<<"doaa\n";
+    int i;
+	foo* ans;
+	ans=(foo*)malloc(n*sizeof(foo));
+	int c[10];
+	for(i=0;i<10;i++)
+		c[i]=0;
+	for(i=0;i<n;i++)
+		c[a[i].key]++;
+		
+		
+	
+	int x=c[0],y;
+	c[0]=0;
+	for(i=0;i<10;i++)
+	{
+		y=c[i];
+		c[i]=c[i-1]+x;
+		x=y;
+	}
+	/*for(i=0;i<10;i++)
+		cout<<c[i]<<" ";*/
+	for(i=0;i<n;i++)
+	{
+	//	cout<<a[i].number<<" "<<a[i].key<<" ";
+		ans[c[a[i].key]].number=a[i].number;
+		
+		ans[c[a[i].key]].key=a[i].key;
+		
+		//cout<<ans[c[a[i].key]].number<<" "<<ans[c[a[i].key]].key<<" ";
+
+		c[a[i].key]=c[a[i].key]+1;
+	}
+	for(i=0;i<n;i++)
+			cout<<"lol"<<ans[i].number<<" ";
+	
+}
+void radixSort(foo a[],int n)
+{
+	//cout<<"dosa"<<endl;
+	int i;
+	for(i=0;i<n;i++)
+		a[i].key=(a[i].key)%10;
+		
+		
+	/*for(i=0;i<n;i++)
+		cout<<a[i].key<<" ";*/
+		
+		countingSort(a,n);
+		
+	for(i=0;i<n;i++)
+		a[i].key=a[i].key/10;
+		
+		
+
+	
+}
+int main() 
+{
+	int n,i;
+	cin>>n;
+	foo* a;
+	a=(foo*)malloc(n*sizeof(foo));
+	for(i=0;i<n;i++)
+		cin>>a[i].number;
+
+	for(i=0;i<n;i++)
+		a[i].key=a[i].number;
+	
+	// assuming at max we have 8 digit numbers
+	
+	
+	radixSort(a,n);
+
+
+	/*for(i=0;i<n;i++)
+		cout<<a[i].number<<" ";
+	*/return 0;
+}
