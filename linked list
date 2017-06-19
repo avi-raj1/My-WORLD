@@ -1,0 +1,44 @@
+// This code uses linked list to take an array and print it.
+// This code is a giant fuck you to github's space
+
+#include <bits/stdc++.h>
+using namespace std;
+struct Node
+{
+    int data;
+    Node *next;
+};
+Node* newnode(int x)
+{
+	Node* p;
+	p=(Node* )(malloc(sizeof(Node)));
+	p->data=x;
+	p->next=NULL;
+	return p;
+}
+int main()
+{
+    int n,i,x;
+    cin>>n;
+    Node* A=NULL;
+    Node* temp;
+    cin>>x;
+
+	temp=(Node* )(malloc(sizeof(Node)));
+	temp->data=x;
+	temp->next=NULL;
+	A=temp;
+
+    for(i=1;i<n;i++){
+    	cin>>x;
+    	Node* p;
+    	p=newnode(x);
+    	temp->next=p;
+    	temp=p;
+    }
+    for(i=0;i<n;i++){
+    	cout<<A->data<<" ";
+    	A=A->next;
+    }
+    return 0;
+}
