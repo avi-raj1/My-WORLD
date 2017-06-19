@@ -1,0 +1,70 @@
+// this code creaes a binart tree without balancing. It only does insertion and finnaly outputs the sorted array using inorder ..
+
+
+#include <bits/stdc++.h>
+using namespace std;
+struct Node
+{
+    int data;
+    Node *leftChild;
+    Node *rightChild;
+    Node *parent;
+};
+Node* newnode(int x)
+{
+	Node* p;
+	p=(Node* )(malloc(sizeof(Node)));
+	p->data=x;
+	p->leftChild=NULL;
+	p->rightChild=NULL;
+	return p;
+}
+void insert(Node* root,Node* z)
+{
+	Node* y=NULL;
+	Node* x=root;
+	while(x!=NULL)
+	{
+		y=x;
+		if(z->data < x->data)
+			x=x->leftChild;
+		else
+			x=x->rightChild;
+	}
+	z->parent=y;
+	if(z->data < y->data)
+		y->leftChild=z;
+	else
+		y->rightChild=z;
+}
+void traverse(Node* a)
+{
+	if(a->leftChild !=NULL)
+		traverse(a->leftChild);
+	cout<<a->data<<" ";
+	if(a->rightChild !=NULL)
+		traverse(a->rightChild);
+}
+int main()
+{
+    int n,i,x;
+    cin>>n;
+    Node* root=NULL;
+    Node* temp;
+    cin>>x;
+
+	temp=(Node* )(malloc(sizeof(Node)));
+	temp->data=x;
+	temp->leftChild=NULL;
+	temp->rightChild=NULL;
+	root=temp;
+
+    for(i=1;i<n;i++){
+    	cin>>x;
+    	Node* p;
+    	p=newnode(x);
+    	insert(root,p);
+    }
+    traverse(root);
+    return 0;
+}
