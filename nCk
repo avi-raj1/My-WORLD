@@ -1,0 +1,30 @@
+// computes nCk in time complexiety O(nk) and space complexiety O(k)
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long int
+int min(int a,int b)
+{
+	if(a<b)
+	return a;
+	return b;
+}
+ll combination(int n,int k)
+{
+	ll val[k+1];
+	// this array will contain nc0 nc1 nc2 .... nck
+	memset(val,0,sizeof(val));
+	val[0]=1;
+	int i,j;
+	for(i=1;i<=n;i++)
+	{
+		for(j=min(i,k);j>0;j--)
+		  val[j]=val[j]+val[j-1];
+		// using the same array again and again to reduce time complexeity
+	}
+	return val[k];
+}
+int main()
+{
+	cout<<combination(150,18)<<" "<<combination(10,3)<<" "<<combination(10,7);
+}
