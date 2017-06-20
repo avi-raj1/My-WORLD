@@ -1,0 +1,45 @@
+// 0-1 knapsack problem 
+// outputs optimal sum of values given capacity is 1 2 3 4 5 6 .....  (sum of all weitghts) 
+// cool
+
+#include <bits/stdc++.h>
+using namespace std;
+void knapsack(int W,int wt[],int val[],int n,int ans[])
+{
+	int i,j,w;
+	int k[n+1][W+1];
+	for(i=0;i<=n;i++)
+	{
+		for(w=0;w<=W;w++)
+		{
+			if(i==0 || w==0)
+				k[i][w]=0;
+			else if(wt[i-1]<=w)
+				k[i][w]=max(val[i-1]+k[i-1][w-wt[i-1]], k[i-1][w]);
+			else
+				k[i][w]=k[i-1][w];
+		}
+	}
+	for(i=1;i<=W;i++)
+	{
+		int max=k[1][i];
+		for(j=1;j<=n;j++)
+			if(k[j][i]>max)
+		    	max=k[j][i];
+		ans[i]=max;
+	}
+}
+int main()
+{
+	int n,i,W=0;
+	cin>>n;
+	int val[n],wt[n];
+	for(i=0;i<n;i++)
+		cin>>wt[i]>>val[i];
+	for(i=0;i<n;i++)
+	    W=W+wt[i];
+    int ans[W+1];
+    knapsack(W,wt,val,n,ans);
+	for(i=1;i<=W;i++)
+	    cout<<ans[i]<<" ";
+}
