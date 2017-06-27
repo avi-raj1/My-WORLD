@@ -1,0 +1,212 @@
+// code takes n integers one by one and maintains rb tree after evrty insertion and finally outputs them in IO with color and parent's dsta
+
+// http://www.spoj.com/problems/IITKESO207SPA2/
+
+#include <bits/stdc++.h>
+using namespace std;
+struct Node
+{
+    int data;
+    char color;
+    Node *leftChild;
+    Node *rightChild;
+    Node *parent;
+};
+Node* newnode(int x)
+{
+	Node* p;
+	p=(Node* )(malloc(sizeof(Node)));
+	p->data=x;
+	p->color='R';
+	p->leftChild=NULL;
+	p->rightChild=NULL;
+	return p;
+}
+void traverse(Node* a,Node* root)
+{
+	if(a->leftChild !=NULL)
+		traverse(a->leftChild,root);
+
+
+	// data printing
+	cout<<a->data;
+
+	// color printing
+	if(a->color=='R')
+		cout<<" R ";
+	else
+		cout<<" B ";
+	//parent data printing
+	if(a==root)
+		cout<<"NIL\n";
+	else
+		cout<<a->parent->data<<endl;
+
+	if(a->rightChild !=NULL)
+		traverse(a->rightChild,root);
+}
+void leftRotate(Node* root,Node* x)
+{
+	
+	Node* y=x->rightChild;
+	x->rightChild=y->leftChild;
+
+	if(y->leftChild!=NULL)
+		y->leftChild->parent=x;
+	y->parent=x->parent;
+	if(x->parent==NULL)
+		root=y;
+	else if(x==x->parent->leftChild)
+		x->parent->leftChild=y;
+	else
+		x->parent->rightChild=y;
+	y->leftChild=x;
+	x->parent=y;
+	
+	cout<<root->data<<endl;
+}
+void rightRotate(Node* root,Node* x)
+{
+	//cout<<"right rotate "<<x->data<<endl;
+	Node* y=x->leftChild;
+	x->leftChild=y->rightChild;
+	if(y->rightChild!=NULL)
+		y->rightChild->parent=x;
+	y->parent=x->parent;
+	if(x->parent==NULL)
+		root=y;
+	else if(x==x->parent->rightChild)
+		x->parent->rightChild=y;
+	else
+		x->parent->leftChild=y;
+	y->rightChild=x;
+	x->parent=y;
+}
+void fixup(Node* root,Node* z)
+{
+	while(z->parent->color=='R')
+	{
+		if(z->parent==z->parent->parent->leftChild)
+		{
+			Node* y=z->parent->parent->rightChild;
+			if(y==NULL)
+			{
+				if(z==z->parent->rightChild)
+				{
+					z=z->parent;
+					leftRotate(root,z);
+				}
+				z->parent->color='B';
+				z->parent->parent->color='R';
+				rightRotate(root,z->parent->parent);
+			}
+			else if (y->color=='B')
+			{
+				if(z==z->parent->rightChild)
+				{
+					z=z->parent;
+					leftRotate(root,z);
+				}
+				z->parent->color='B';
+				z->parent->parent->color='R';
+				rightRotate(root,z->parent->parent);
+			}
+			else 
+			{
+				z->parent->color='B';
+				y->color='B';
+				z->parent->parent->color='R';
+				z=z->parent->parent;
+			}
+		}
+		else
+		{
+			Node* y=z->parent->parent->leftChild;
+			if(y==NULL)
+			{
+				if(z==z->parent->leftChild)
+				{
+					z=z->parent;
+					rightRotate(root,z);
+				}
+				z->parent->color='B';
+				z->parent->parent->color='R';
+				leftRotate(root,z->parent->parent);	
+			}
+			else if (y->color=='B')
+			{
+				if(z==z->parent->leftChild)
+				{
+					z=z->parent;
+					rightRotate(root,z);
+				}
+				z->parent->color='B';
+				z->parent->parent->color='R';
+				leftRotate(root,z->parent->parent);	
+			}
+			else
+			{
+			    
+			    
+			    
+			    
+				z->parent->color='B';
+				y->color='B';
+				z->parent->parent->color='R';
+				z=z->parent->parent;
+				
+				//cout<<z->data<<z->color<<endl;
+			    
+			}
+		}
+		
+		root->color='B';
+		if(z==root)
+			return;
+			//cout<<z->data<<z->color<<endl;
+	}
+}
+void insert(Node* root,Node* z)
+{
+	Node* y=NULL;
+	Node* x=root;
+	while(x!=NULL)
+	{
+		y=x;
+		if(z->data < x->data)
+			x=x->leftChild;
+		else
+			x=x->rightChild;
+	}
+	z->parent=y;
+	if(z->data < y->data)
+		y->leftChild=z;
+	else
+		y->rightChild=z;
+	//cout<<" call fix up at "<<z->data<<endl;
+	fixup(root,z);
+}
+
+int main()
+{
+    int n,i,x;
+    cin>>n;
+    Node* root;
+    cin>>x;
+
+	root=(Node* )(malloc(sizeof(Node)));
+	root->data=x;
+	root->color='B';
+	root->leftChild=NULL;
+	root->rightChild=NULL;
+	root->parent=NULL;
+
+    for(i=1;i<n;i++){
+    	cin>>x;
+    	Node* p;
+    	p=newnode(x);
+    	insert(root,p);
+    }
+    traverse(root,root);
+    return 0;
+}
